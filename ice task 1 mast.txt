@@ -1,0 +1,130 @@
+import React, { useState } from 'react';
+import { View, TextInput, TouchableOpacity, StyleSheet, Text } from 'react-native';
+
+const Calculator = () => {
+    const [num1, setNum1] = useState('');
+    const [num2, setNum2] = useState('');
+    const [result, setResult] = useState('');
+
+    const calculate = (operation) => {
+        const number1 = parseFloat(num1);
+        const number2 = parseFloat(num2);
+        let res;
+
+        if (isNaN(number1) || isNaN(number2)) {
+            setResult('Error');
+            return;
+        }
+
+        switch (operation) {
+            case '+':
+                res = number1 + number2;
+                break;
+            case '-':
+                res = number1 - number2;
+                break;
+            case '*':
+                res = number1 * number2;
+                break;
+            case '/':
+                if (number2 === 0) {
+                    setResult('Cannot divide by zero');
+                    return;
+                }
+                res = number1 / number2;
+                break;
+            default:
+                res = 'Error';
+        }
+
+        setResult(res.toString());
+    };
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.heading}>Calculator App</Text>
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Enter Number"
+                    keyboardType="numeric"
+                    value={num1}
+                    onChangeText={setNum1}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Enter Number"
+                    keyboardType="numeric"
+                    value={num2}
+                    onChangeText={setNum2}
+                />
+            </View>
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.button} onPress={() => calculate('+')}>
+                    <Text style={styles.buttonText}>+</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={() => calculate('-')}>
+                    <Text style={styles.buttonText}>-</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={() => calculate('*')}>
+                    <Text style={styles.buttonText}>*</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={() => calculate('/')}>
+                    <Text style={styles.buttonText}>/</Text>
+                </TouchableOpacity>
+            </View>
+            <Text style={styles.result}>Result: {result}</Text>
+        </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'top',
+        alignItems: 'center',
+        padding: 20,
+    },
+    heading: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 20,
+    },
+    inputContainer: {
+        width: '100%',
+        alignItems: 'center',
+    },
+    input: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        margin: 10,
+        width: '80%',
+        paddingHorizontal: 10,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '80%',
+        marginVertical: 20,
+    },
+    button: {
+        backgroundColor: 'black',
+        padding: 10,
+        marginHorizontal: 10,
+        width: 50,
+        alignItems: 'center',
+        borderRadius: 5,
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    result: {
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+});
+
+export default Calculator;
